@@ -57,7 +57,7 @@ public sealed class Product : EntityBase
     [MemberNotNull(nameof(Image))]
     private void ValidateDomain(
         string name,
-        string description, 
+        string description,
         decimal price,
         int stock,
         string image)
@@ -80,6 +80,12 @@ public sealed class Product : EntityBase
 
         DomainExceptionValidation.When(image.Length > 250,
             "Invalid image name, too long, maximum 250 characters");
+
+        Name = name;
+        Description = description;
+        Price = price;
+        Stock = stock;
+        Image = image;
     }
 
 
