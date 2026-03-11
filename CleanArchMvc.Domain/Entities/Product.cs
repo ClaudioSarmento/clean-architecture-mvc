@@ -9,7 +9,7 @@ public sealed class Product : EntityBase
     public string Description { get; private set; }
     public decimal Price { get; private set; }
     public int Stock {  get; private set; }
-    public string Image { get; private set;  }
+    public string? Image { get; private set;  }
     public int CategoryId { get; set; }
     public Category Category { get; set; } = null!;
 
@@ -54,7 +54,6 @@ public sealed class Product : EntityBase
     [MemberNotNull(nameof(Description))]
     [MemberNotNull(nameof(Price))]
     [MemberNotNull(nameof(Stock))]
-    [MemberNotNull(nameof(Image))]
     private void ValidateDomain(
         string name,
         string description,
@@ -78,7 +77,7 @@ public sealed class Product : EntityBase
 
         DomainExceptionValidation.When(stock < 0, "Invalid stock value");
 
-        DomainExceptionValidation.When(image.Length > 250,
+        DomainExceptionValidation.When(image?.Length > 250,
             "Invalid image name, too long, maximum 250 characters");
 
         Name = name;

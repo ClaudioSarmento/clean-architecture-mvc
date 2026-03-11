@@ -51,6 +51,13 @@ public class ProductUnitTest1
            .NotThrow<DomainExceptionValidation>();
     }
 
+    [Fact(DisplayName = "Create Product With NullImageName NoNullReferenceException")]
+    public void CreateProduct_WithNullImageName_NoNullReferenceException()
+    {
+        Action action = () => new Product(1, "Product Name", "Product Description", 9.99m, 99, null);
+        action.Should().NotThrow<NullReferenceException>();
+    }
+
     [Theory(DisplayName = "Create Product InvalidStockValue ExceptionDomainNegativeValue")]
     [InlineData(-5)]
     public void CreateProduct_InvalidStockValue_ExceptionDomainNegativeValue(int value)
