@@ -19,14 +19,13 @@ public class CategoryRepository : ICategoryRepository
         return category;
     }
 
-    public async Task<Category> GetByIdAsync(int? id)
+    public async Task<Category?> GetByIdAsync(int? id)
     {
         var category = await _categoryContext.Categories.FindAsync(id);
-        DomainExceptionValidation.When(category == null, "Categoria não encontrada");
-        return category!;
+        return category;
     }
 
-    public async Task<IEnumerable<Category>> GetCategoriesAsync()
+    public async Task<IReadOnlyList<Category>> GetCategoriesAsync()
     {
         var categories = await _categoryContext.Categories
             .AsNoTracking()
