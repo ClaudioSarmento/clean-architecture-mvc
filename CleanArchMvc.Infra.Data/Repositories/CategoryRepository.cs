@@ -19,7 +19,7 @@ public class CategoryRepository : ICategoryRepository
         return category;
     }
 
-    public async Task<Category?> GetByIdAsync(int? id)
+    public async Task<Category?> GetByIdAsync(int id)
     {
         var category = await _categoryContext.Categories.FindAsync(id);
         return category;
