@@ -1,32 +1,51 @@
-﻿using CleanArchMvc.Application.DTOs;
+﻿using AutoMapper;
+using CleanArchMvc.Application.DTOs;
 using CleanArchMvc.Application.Services.Interfaces;
+using CleanArchMvc.Domain.Entities;
+using CleanArchMvc.Domain.Interfaces;
 
 namespace CleanArchMvc.Application.Services;
 
 public class ProductService : IProductService
 {
-    public Task<ProductDTO> AddAsync(ProductDTO product)
+    private IProductRepository _productRepository;
+    private readonly IMapper _mapper;
+
+    public ProductService(IProductRepository productRepository, IMapper mapper)
     {
-        throw new NotImplementedException();
+        _productRepository = productRepository;
+        _mapper = mapper;
     }
 
-    public Task DeleteAsync(int id)
+    public async Task<ProductDTO> GetProductByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var productEntity = await _productRepository.GetByIdAsync(id);
+        var productDTO = _mapper.Map<ProductDTO>(productEntity);
+        return productDTO;
     }
 
-    public Task<ProductDTO> GetProductByIdAsync(int id)
+    public async Task<IReadOnlyList<ProductDTO>> GetProductsAsync()
     {
-        throw new NotImplementedException();
+        var productsEntity = await _productRepository.GetProductsAsync();
+        var productsDTO = _mapper.Map<IReadOnlyList<ProductDTO>>(productsEntity);
+        return productsDTO;
     }
 
-    public Task<IReadOnlyList<ProductDTO>> GetProductsAsync()
+    public async Task AddAsync(ProductDTO product)
     {
-        throw new NotImplementedException();
+        var productEntity = _mapper.Map<Product>(product);
+        await _productRepository.CreateAsync(productEntity);
     }
 
-    public Task<ProductDTO> UpdateAsync(ProductDTO product)
+    public async Task UpdateAsync(ProductDTO product)
     {
-        throw new NotImplementedException();
+        var productEntity = _mapper.Map<Product>(product);
+        await _productRepository.UpdateAsync(productEntity);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        var productEntity = await _productRepository.GetByIdAsync(id);
+        await _productRepository.RemoveAsync(productEntity!);
     }
 }
