@@ -431,3 +431,4 @@ appsettings.json
 appsettings.Development.json
 appsettings.Production.json
 /CleanArchMvc.WebUI/appsettings.json
+appsettings.Local.json

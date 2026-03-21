@@ -42,7 +42,7 @@ public class CategoryRepository : ICategoryRepository
 
     public async Task<Category> UpdateAsync(Category category)
     {
-        _categoryContext.Update(category);
+         _categoryContext.Update(category);
         await _categoryContext.SaveChangesAsync();
         return category;
     }

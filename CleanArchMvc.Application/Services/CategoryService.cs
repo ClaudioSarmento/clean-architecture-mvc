@@ -34,14 +34,14 @@ public class CategoryService : ICategoryService
     public async Task AddAsync(CategoryDTO category)
     {
 
-        var catoryEntitie = _mapper.Map<Category>(category);
-        await _categoryRepository.CreateAsync(catoryEntitie);
+        var categoryEntitie = _mapper.Map<Category>(category);
+        await _categoryRepository.CreateAsync(categoryEntitie);
     }
 
     public async Task UpdateAsync(CategoryDTO category)
     {
-        var catoryEntitie = _mapper.Map<Category>(category);
-        await _categoryRepository.UpdateAsync(catoryEntitie);
+        var categoryEntitie = _mapper.Map<Category>(category);
+        await _categoryRepository.UpdateAsync(categoryEntitie);
     }
 
     public async Task RemoveAsync(int id)
