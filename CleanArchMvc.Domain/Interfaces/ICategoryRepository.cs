@@ -4,9 +4,9 @@ namespace CleanArchMvc.Domain.Interfaces;
 
 public interface ICategoryRepository
 {
-    Task<IReadOnlyList<Category>> GetCategoriesAsync();
-    Task<Category?> GetByIdAsync(int id);
-    Task<Category> CreateAsync(Category category);
-    Task<Category> UpdateAsync(Category category);
-    Task<Category> RemoveAsync(Category category);
+    Task<IReadOnlyList<Category>> GetCategoriesAsync(CancellationToken cancellationToken);
+    Task<Category?> GetByIdAsync(int id, CancellationToken cancellationToken);
+    Task<Category> CreateAsync(Category category, CancellationToken cancellationToken);
+    Task<Category> UpdateAsync(Category category, CancellationToken cancellationToken);
+    Task<Category> RemoveAsync(Category category, CancellationToken cancellationToken);
 }

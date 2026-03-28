@@ -14,23 +14,23 @@ public class CategoriesController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
-        var result = await _categoryService.GetCategoriesAsync();
+        var result = await _categoryService.GetCategoriesAsync(cancellationToken);
         return View(result);
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(int id)
+    public async Task<IActionResult> Edit(int id, CancellationToken cancellationToken)
     {
-        var result = await _categoryService.GetCategoryByIdAsync(id);
+        var result = await _categoryService.GetCategoryByIdAsync(id, cancellationToken);
         return View(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(CategoryDTO categoryDTO)
+    public async Task<IActionResult> Edit(CategoryDTO categoryDTO, CancellationToken cancellationToken)
     {
-        await _categoryService.UpdateAsync(categoryDTO);
+        await _categoryService.UpdateAsync(categoryDTO, cancellationToken);
         return RedirectToAction(nameof(Index));
     }
 }

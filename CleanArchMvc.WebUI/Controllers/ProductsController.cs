@@ -13,23 +13,23 @@ public class ProductsController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(CancellationToken cancellationToken)
     {
-        var result = await _productService.GetProductsAsync();
+        var result = await _productService.GetProductsAsync(cancellationToken);
         return View(result);
     }
 
     [HttpGet]
-    public async Task<IActionResult> Edit(int id)
+    public async Task<IActionResult> Edit(int id, CancellationToken cancellationToken)
     {
-        var result = await _productService.GetProductByIdAsync(id);
+        var result = await _productService.GetProductByIdAsync(id,cancellationToken);
         return View(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(ProductDTO productDTO)
+    public async Task<IActionResult> Edit(ProductDTO productDTO, CancellationToken cancellationToken)
     {
-        await _productService.UpdateAsync(productDTO);
+        await _productService.UpdateAsync(productDTO, cancellationToken);
         return RedirectToAction(nameof(Index));
     }
 }

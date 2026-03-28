@@ -17,36 +17,36 @@ public class CategoryService : ICategoryService
         _categoryRepository = categoryRepository;
     }
 
-    public async Task<IReadOnlyList<CategoryDTO>> GetCategoriesAsync()
+    public async Task<IReadOnlyList<CategoryDTO>> GetCategoriesAsync(CancellationToken cancellationToken)
     {
-        var categoriesEntity = await _categoryRepository.GetCategoriesAsync();
+        var categoriesEntity = await _categoryRepository.GetCategoriesAsync(cancellationToken);
         var categoriesDTO = _mapper.Map<IReadOnlyList<CategoryDTO>>(categoriesEntity);
         return categoriesDTO;
     }
 
-    public async Task<CategoryDTO> GetCategoryByIdAsync(int id)
+    public async Task<CategoryDTO> GetCategoryByIdAsync(int id, CancellationToken cancellationToken)
     {
-        var categoryEntity = await _categoryRepository.GetByIdAsync(id);
+        var categoryEntity = await _categoryRepository.GetByIdAsync(id, cancellationToken);
         var categoryDTO = _mapper.Map<CategoryDTO>(categoryEntity);
         return categoryDTO;
     }
 
-    public async Task AddAsync(CategoryDTO category)
+    public async Task AddAsync(CategoryDTO category, CancellationToken cancellationToken)
     {
 
         var categoryEntitie = _mapper.Map<Category>(category);
-        await _categoryRepository.CreateAsync(categoryEntitie);
+        await _categoryRepository.CreateAsync(categoryEntitie, cancellationToken);
     }
 
-    public async Task UpdateAsync(CategoryDTO category)
+    public async Task UpdateAsync(CategoryDTO category, CancellationToken cancellationToken)
     {
         var categoryEntitie = _mapper.Map<Category>(category);
-        await _categoryRepository.UpdateAsync(categoryEntitie);
+        await _categoryRepository.UpdateAsync(categoryEntitie, cancellationToken);
     }
 
-    public async Task RemoveAsync(int id)
+    public async Task RemoveAsync(int id, CancellationToken cancellationToken)
     {
-        var categoryEntity = await _categoryRepository.GetByIdAsync(id);
-        await _categoryRepository.RemoveAsync(categoryEntity!);
+        var categoryEntity = await _categoryRepository.GetByIdAsync(id, cancellationToken);
+        await _categoryRepository.RemoveAsync(categoryEntity!, cancellationToken);
     }
 }
