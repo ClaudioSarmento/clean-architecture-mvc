@@ -1,0 +1,50 @@
+﻿@using CleanArchMvc.Application.DTOs;
+@model IReadOnlyList<CategoryDTO>;
+
+@{
+    ViewData["Title"] = "Categories Management";
+}
+
+<div>
+    <h2>@ViewData["Title"]</h2>
+</div>
+@if (Model == null || !Model.Any())
+{
+    <p>Nenhuma categoria encontrada.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Name)
+                </th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var categoria in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => categoria.Id)</td>
+                    <td>@Html.DisplayFor(modelItem => categoria.Name)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@categoria.Id" title="Edit" class="btn-warning">
+                            <span class="fas fa-edit">Edit</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@categoria.Id" title="Delete" class="btn-danger">
+                            <span class="fas fa-trash-alt">Details</span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

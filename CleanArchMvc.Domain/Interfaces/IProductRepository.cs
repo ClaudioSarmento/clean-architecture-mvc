@@ -4,10 +4,10 @@ namespace CleanArchMvc.Domain.Interfaces;
 
 public interface IProductRepository
 {
-    Task<IReadOnlyList<Product>> GetProductsAsync();
-    Task<Product?> GetByIdAsync(int? id);
-    Task<Product?> GetProductCategoryAsync(int? categoryId);
-    Task<Product> CreateAsync(Product product);
-    Task<Product> UpdateAsync(Product product);
-    Task<Product> RemoveAsync(Product product);
+    Task<IReadOnlyList<Product>> GetProductsAsync(CancellationToken cancellationToken);
+    Task<Product?> GetByIdAsync(int? id, CancellationToken cancellationToken);
+    Task<Product?> GetProductCategoryAsync(int? categoryId, CancellationToken cancellationToken);
+    Task<Product> CreateAsync(Product product, CancellationToken cancellationToken);
+    Task<Product> UpdateAsync(Product product, CancellationToken cancellationToken);
+    Task<Product> RemoveAsync(Product product, CancellationToken cancellationToken);
 }

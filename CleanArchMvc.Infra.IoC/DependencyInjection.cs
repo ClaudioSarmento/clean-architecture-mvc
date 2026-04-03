@@ -1,4 +1,6 @@
-﻿using CleanArchMvc.Application.Services;
+﻿using CleanArchMvc.Application.Mappings;
+using CleanArchMvc.Application.Products.Handlers.Command;
+using CleanArchMvc.Application.Services;
 using CleanArchMvc.Application.Services.Interfaces;
 using CleanArchMvc.Domain.Interfaces;
 using CleanArchMvc.Infra.Data.Context;
@@ -21,8 +23,14 @@ public static class DependencyInjection
 
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
+        services.AddMediatR(config =>
+        {
+            config.RegisterServicesFromAssembly(typeof(ProductCreateCommandHandler).Assembly);
+        });
         return services;
     }
 }

@@ -10,5 +10,6 @@ public class DomainToDTOMappingProfile : Profile
     {
         CreateMap<Category, CategoryDTO>().ReverseMap();
         CreateMap<Product, ProductDTO>().ReverseMap();
+       
     }
 }
