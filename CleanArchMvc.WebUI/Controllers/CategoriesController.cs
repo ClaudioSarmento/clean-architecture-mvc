@@ -28,9 +28,26 @@ public class CategoriesController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(CategoryDTO categoryDTO, CancellationToken cancellationToken)
+    public async Task<IActionResult> Edit(CategoryDTO category, CancellationToken cancellationToken)
     {
-        await _categoryService.UpdateAsync(categoryDTO, cancellationToken);
+        await _categoryService.UpdateAsync(category, cancellationToken);
         return RedirectToAction(nameof(Index));
+    }
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CategoryDTO category, CancellationToken cancellationToken)
+    {
+        if (ModelState.IsValid)
+        {
+            await _categoryService.AddAsync(category, cancellationToken);
+            return RedirectToAction(nameof(Index));
+        }
+        return View(category);
     }
 }

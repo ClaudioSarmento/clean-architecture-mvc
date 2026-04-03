@@ -8,6 +8,11 @@
 <div>
     <h2>@ViewData["Title"]</h2>
 </div>
+<div class="float-start">
+    <a asp-action="Create" class="btn btn-primary">
+        <span class="fas fa-plus" aria-hidden="true"></span> Register New
+    </a>
+</div>
 @if (Model == null || !Model.Any())
 {
     <p>Nenhuma categoria encontrada.</p>

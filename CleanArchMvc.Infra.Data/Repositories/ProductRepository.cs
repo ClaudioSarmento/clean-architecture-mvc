@@ -29,7 +29,6 @@ public class ProductRepository(ApplicationDbContext _context) : IProductReposito
 
     public async Task<IReadOnlyList<Product>> GetProductsAsync(CancellationToken cancellationToken)
     {
-        await Task.Delay(60000);
         var products = await _context.Products
             .AsNoTracking()
             .ToListAsync(cancellationToken);
