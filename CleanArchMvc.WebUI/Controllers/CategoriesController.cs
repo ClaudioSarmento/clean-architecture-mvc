@@ -71,4 +71,11 @@ public class CategoriesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [HttpGet]
+    public async Task<IActionResult> Details(int id, CancellationToken cancellationToken)
+    {
+        var result = await _categoryService.GetCategoryByIdAsync(id, cancellationToken);
+        return View(result);
+    }
+
 }
