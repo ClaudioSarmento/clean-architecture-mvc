@@ -27,9 +27,55 @@ public class ProductsController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Edit(ProductDTO productDTO, CancellationToken cancellationToken)
+    public async Task<IActionResult> Edit(ProductDTO product, CancellationToken cancellationToken)
     {
-        await _productService.UpdateAsync(productDTO, cancellationToken);
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                await _productService.UpdateAsync(product, cancellationToken);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        return View(product);
+    }
+
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(ProductDTO product, CancellationToken cancellationToken)
+    {
+        if (ModelState.IsValid)
+        {
+            await _productService.AddAsync(product, cancellationToken);
+            return RedirectToAction(nameof(Index));
+        }
+        return View(product);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id, CancellationToken cancellationToken)
+    {
+
+        await _productService.DeleteAsync(id, cancellationToken);
         return RedirectToAction(nameof(Index));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> Details(int id, CancellationToken cancellationToken)
+    {
+        var result = await _productService.GetProductByIdAsync(id, cancellationToken);
+        return View(result);
+    }
+
 }

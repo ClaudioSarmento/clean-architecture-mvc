@@ -37,7 +37,7 @@ public class ProductDTO
     [DisplayName("Product Image")]
     public string Image { get; set; } = null!;
 
-    public required CategoryDTO Category { get; set; } 
+    public required ProductDTO Category { get; set; } 
 
     [DisplayName("Categories")]
     public int CategoryId { get; set;  }
