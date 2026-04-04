@@ -30,8 +30,19 @@ public class CategoriesController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(CategoryDTO category, CancellationToken cancellationToken)
     {
-        await _categoryService.UpdateAsync(category, cancellationToken);
-        return RedirectToAction(nameof(Index));
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                await _categoryService.UpdateAsync(category, cancellationToken);
+
+            }catch (Exception)
+            {
+                throw;
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        return View(category);
     }
 
     [HttpGet]
@@ -50,4 +61,14 @@ public class CategoriesController : Controller
         }
         return View(category);
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken] 
+    public async Task<IActionResult> DeleteConfirmed(int id, CancellationToken cancellationToken)
+    {
+       
+        await _categoryService.RemoveAsync(id, cancellationToken);
+        return RedirectToAction(nameof(Index));
+    }
+
 }

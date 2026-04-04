@@ -43,13 +43,63 @@ else
                             <span class="fas fa-edit">Edit</span>
                         </a>
                     </td>
-                    <td>
+                    @* <td>
                         <a asp-action="Delete" asp-route-id="@categoria.Id" title="Delete" class="btn-danger">
-                            <span class="fas fa-trash-alt">Details</span>
+                            <span class="fas fa-trash-alt">Delete</span>
                         </a>
+                    </td> *@
+                    <td>
+                        <button type="button"
+                                class="btn btn-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"
+                                data-id="@categoria.Id"
+                                data-name="@categoria.Name">
+                            <span class="fas fa-trash-alt"></span> Delete
+                        </button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 }
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Tem a certeza que deseja eliminar a categoria <strong id="categoryNameDisplay"></strong>?
+            </div>
+            <div class="modal-footer">
+                <form asp-action="DeleteConfirmed" method="post">
+                    <input type="hidden" name="id" id="categoryIdInput" value="" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        // Botão que acionou o modal
+        var button = event.relatedTarget;
+        
+        // Extrair informações dos atributos data-*
+        var id = button.getAttribute('data-id');
+        var name = button.getAttribute('data-name');
+
+        // Atualizar o conteúdo do modal
+        var modalInput = deleteModal.querySelector('#categoryIdInput');
+        var modalText = deleteModal.querySelector('#categoryNameDisplay');
+
+        modalInput.value = id;
+        modalText.textContent = name;
+    });
+</script>
