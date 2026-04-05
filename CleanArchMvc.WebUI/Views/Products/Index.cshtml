@@ -5,63 +5,114 @@
     ViewData["Title"] = "Products Management";
 }
 
-
 <div>
     <h2>@ViewData["Title"]</h2>
 </div>
-<div class="pull-left">
+<div class="float-start">
     <a asp-action="Create" class="btn btn-primary">
-        <span title="Register New" class="fas fa-plus">Register New</span>
+        <span class="fas fa-plus" aria-hidden="true"></span> Register New
     </a>
 </div>
 @if (Model == null || !Model.Any())
 {
-    <p>Nenhuma categoria encontrada.</p>
+    <p>Nenhum produto encontrado.</p>
 }
 else
 {
-    <div class="panel panel-default">
-        <table class="table talbe-striped">
-            <thead>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Stock)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Category)
+                </th>
+                <th>Details</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var produto in Model)
+            {
                 <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.First().Id)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.First().Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.First().Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.First().Stock)
-                    </th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <td>@Html.DisplayFor(modelItem => produto.Id)</td>
+                    <td>@Html.DisplayFor(modelItem => produto.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => produto.Description)</td>
+                    <td>@Html.DisplayFor(modelItem => produto.Stock)</td>
+                    <td>@produto.Category?.Name</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@produto.Id" title="Details" class="btn btn-info">
+                            <span class="fas fa-info-circle"></span> Details
+                        </a>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@produto.Id" title="Edit" class="btn btn-warning">
+                            <span class="fas fa-edit"></span> Edit
+                        </a>
+                    </td>
+                    <td>
+                        <button type="button"
+                                class="btn btn-danger"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteModal"
+                                data-id="@produto.Id"
+                                data-name="@produto.Name">
+                            <span class="fas fa-trash-alt"></span> Delete
+                        </button>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var produto in Model)
-                {
-                    <tr>
-                        <td>@Html.DisplayFor(modelItem => produto.Id)</td>
-                        <td>@Html.DisplayFor(modelItem => produto.Name)</td>
-                        <td>@Html.DisplayFor(modelItem => produto.Description)</td>
-                        <td>@Html.DisplayFor(modelItem => produto.Stock)</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@produto.Id" title="Edit" class="btn-warning">
-                                <span class="fas fa-edit">Edit</span>
-                            </a>
-                        </td>
-                        <td>
-                            <a asp-action="Delete" asp-route-id="@produto.Id" title="Delete" class="btn-danger">
-                                <span class="fas fa-trash-alt">Delete</span>
-                            </a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-
+            }
+        </tbody>
+    </table>
 }
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Tem a certeza que deseja eliminar o produto <strong id="productNameDisplay"></strong>?
+            </div>
+            <div class="modal-footer">
+                <form asp-action="DeleteConfirmed" method="post">
+                    <input type="hidden" name="id" id="productIdInput" value="" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Confirmar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        // Botão que acionou o modal
+        var button = event.relatedTarget;
+        
+        // Extrair informações dos atributos data-*
+        var id = button.getAttribute('data-id');
+        var name = button.getAttribute('data-name');
+
+        // Atualizar o conteúdo do modal
+        var modalInput = deleteModal.querySelector('#productIdInput');
+        var modalText = deleteModal.querySelector('#productNameDisplay');
+
+        modalInput.value = id;
+        modalText.textContent = name;
+    });
+</script>

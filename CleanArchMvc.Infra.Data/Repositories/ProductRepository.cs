@@ -14,11 +14,14 @@ public class ProductRepository(ApplicationDbContext _context) : IProductReposito
         return product;
     }
 
-    public async Task<Product?> GetByIdAsync(int? id, CancellationToken cancellationToken)
+    public async Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-       var product = await _context.Products.FindAsync(id, cancellationToken);
-       return product;
+        return await _context.Products
+            .Include(p => p.Category)  
+            .FirstOrDefaultAsync(p => p.Id == id);
     }
+
+   
 
     public async Task<Product?> GetProductCategoryAsync(int? id, CancellationToken cancellationToken)
     {
@@ -29,9 +32,8 @@ public class ProductRepository(ApplicationDbContext _context) : IProductReposito
 
     public async Task<IReadOnlyList<Product>> GetProductsAsync(CancellationToken cancellationToken)
     {
-        await Task.Delay(60000);
         var products = await _context.Products
-            .AsNoTracking()
+            .Include(p => p.Category)  
             .ToListAsync(cancellationToken);
         return products;
     }
