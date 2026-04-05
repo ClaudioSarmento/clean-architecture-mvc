@@ -17,7 +17,7 @@ public class ProductRepository(ApplicationDbContext _context) : IProductReposito
     public async Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         return await _context.Products
-            .Include(p => p.Category)  // ← Adicione isso
+            .Include(p => p.Category)  
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
@@ -33,7 +33,7 @@ public class ProductRepository(ApplicationDbContext _context) : IProductReposito
     public async Task<IReadOnlyList<Product>> GetProductsAsync(CancellationToken cancellationToken)
     {
         var products = await _context.Products
-            .Include(p => p.Category)  // ← Adicione isso
+            .Include(p => p.Category)  
             .ToListAsync(cancellationToken);
         return products;
     }
