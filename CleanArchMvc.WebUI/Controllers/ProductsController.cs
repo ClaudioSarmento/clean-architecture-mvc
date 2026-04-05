@@ -6,10 +6,12 @@ namespace CleanArchMvc.WebUI.Controllers;
 public class ProductsController : Controller
 {
     private readonly IProductService _productService;
+    private readonly ICategoryService _categoryService;
 
-    public ProductsController(IProductService productService)
+    public ProductsController(IProductService productService, ICategoryService categoryService)
     {
         _productService = productService;
+        _categoryService = categoryService;
     }
 
     [HttpGet]
@@ -22,7 +24,9 @@ public class ProductsController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(int id, CancellationToken cancellationToken)
     {
-        var result = await _productService.GetProductByIdAsync(id,cancellationToken);
+        var result = await _productService.GetProductByIdAsync(id, cancellationToken);
+        var categories = await _categoryService.GetCategoriesAsync(cancellationToken);
+        ViewBag.Categories = categories;
         return View(result);
     }
 
@@ -34,7 +38,6 @@ public class ProductsController : Controller
             try
             {
                 await _productService.UpdateAsync(product, cancellationToken);
-
             }
             catch (Exception)
             {
@@ -42,12 +45,16 @@ public class ProductsController : Controller
             }
             return RedirectToAction(nameof(Index));
         }
+        var categories = await _categoryService.GetCategoriesAsync(cancellationToken);
+        ViewBag.Categories = categories;
         return View(product);
     }
 
     [HttpGet]
-    public IActionResult Create()
+    public async Task<IActionResult> Create(CancellationToken cancellationToken)
     {
+        var categories = await _categoryService.GetCategoriesAsync(cancellationToken);
+        ViewBag.Categories = categories;
         return View();
     }
 
@@ -59,6 +66,8 @@ public class ProductsController : Controller
             await _productService.AddAsync(product, cancellationToken);
             return RedirectToAction(nameof(Index));
         }
+        var categories = await _categoryService.GetCategoriesAsync(cancellationToken);
+        ViewBag.Categories = categories;
         return View(product);
     }
 
@@ -66,7 +75,6 @@ public class ProductsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id, CancellationToken cancellationToken)
     {
-
         await _productService.DeleteAsync(id, cancellationToken);
         return RedirectToAction(nameof(Index));
     }
@@ -77,5 +85,4 @@ public class ProductsController : Controller
         var result = await _productService.GetProductByIdAsync(id, cancellationToken);
         return View(result);
     }
-
 }

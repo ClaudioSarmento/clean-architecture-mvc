@@ -34,6 +34,9 @@ else
                 <th>
                     @Html.DisplayNameFor(model => model.First().Stock)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.First().Category)
+                </th>
                 <th>Details</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -47,6 +50,7 @@ else
                     <td>@Html.DisplayFor(modelItem => produto.Name)</td>
                     <td>@Html.DisplayFor(modelItem => produto.Description)</td>
                     <td>@Html.DisplayFor(modelItem => produto.Stock)</td>
+                    <td>@produto.Category?.Name</td>
                     <td>
                         <a asp-action="Details" asp-route-id="@produto.Id" title="Details" class="btn btn-info">
                             <span class="fas fa-info-circle"></span> Details

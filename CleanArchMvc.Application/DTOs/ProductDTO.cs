@@ -37,8 +37,9 @@ public class ProductDTO
     [DisplayName("Product Image")]
     public string Image { get; set; } = null!;
 
-    public required ProductDTO Category { get; set; } 
+    public CategoryDTO? Category { get; set; }
 
+    [Required(ErrorMessage = "The Category is Required")]
     [DisplayName("Categories")]
-    public int CategoryId { get; set;  }
+    public int CategoryId { get; set; }
 }
