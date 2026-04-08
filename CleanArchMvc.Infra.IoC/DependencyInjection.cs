@@ -2,9 +2,12 @@
 using CleanArchMvc.Application.Products.Handlers.Command;
 using CleanArchMvc.Application.Services;
 using CleanArchMvc.Application.Services.Interfaces;
+using CleanArchMvc.Domain.Account;
 using CleanArchMvc.Domain.Interfaces;
 using CleanArchMvc.Infra.Data.Context;
+using CleanArchMvc.Infra.Data.Identity;
 using CleanArchMvc.Infra.Data.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +24,18 @@ public static class DependencyInjection
                 b => b.MigrationsAssembly(typeof(ApplicationDbContext)
                 .Assembly.FullName)));
 
+        services.AddIdentity<ApplicationUser, IdentityRole>()
+          .AddEntityFrameworkStores<ApplicationDbContext>()
+          .AddDefaultTokenProviders();
+
+        services.ConfigureApplicationCookie(options =>
+        {
+            options.AccessDeniedPath = "/Account/Login";
+        });
+
+        services.AddScoped<IAuthenticate, AuthenticateService>();
+        services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
+
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
 
@@ -31,6 +46,7 @@ public static class DependencyInjection
         {
             config.RegisterServicesFromAssembly(typeof(ProductCreateCommandHandler).Assembly);
         });
+
         return services;
     }
 }
