@@ -1,8 +1,5 @@
 ﻿using CleanArchMvc.Domain.Account;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CleanArchMvc.Infra.Data.Identity
 {
