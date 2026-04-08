@@ -2,6 +2,6 @@
 
 public interface ISeedUserRoleInitial
 {
-    void SeedUsers();
-    void SeedRoles();
+    Task SeedUsersAsync();
+    Task SeedRolesAsync();
 }
