@@ -1,5 +1,6 @@
 using CleanArchMvc.Infra.IoC;
 using Microsoft.OpenApi;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,8 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
 {
     options.ReturnHttpNotAcceptable = true;
+   
 })
-.AddXmlSerializerFormatters();
+.AddXmlSerializerFormatters()
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen
