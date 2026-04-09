@@ -44,6 +44,7 @@ public class CategoryService : ICategoryService
         await _categoryRepository.UpdateAsync(categoryEntitie, cancellationToken);
     }
 
+
     public async Task RemoveAsync(int id, CancellationToken cancellationToken)
     {
         var categoryEntity = await _categoryRepository.GetByIdAsync(id, cancellationToken);
