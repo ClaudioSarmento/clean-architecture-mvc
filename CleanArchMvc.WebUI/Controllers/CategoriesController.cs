@@ -9,7 +9,7 @@ namespace CleanArchMvc.WebUI.Controllers;
 public class CategoriesController : Controller
 {
     private readonly ICategoryService _categoryService;
-
+  
     public CategoriesController(ICategoryService categoryService)
     {
         _categoryService = categoryService;
@@ -67,7 +67,8 @@ public class CategoriesController : Controller
     }
 
     [HttpPost]
-    [ValidateAntiForgeryToken] 
+    [ValidateAntiForgeryToken]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteConfirmed(int id, CancellationToken cancellationToken)
     {
        

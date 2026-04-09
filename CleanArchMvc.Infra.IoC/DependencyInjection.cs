@@ -41,7 +41,7 @@ public static class DependencyInjection
 
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICategoryService, CategoryService>();
-        services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
+        services.AddAutoMapper(config => { }, typeof(DomainToDTOMappingProfile).Assembly);
         services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssembly(typeof(ProductCreateCommandHandler).Assembly);
