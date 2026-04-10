@@ -22,7 +22,7 @@ namespace CleanArchMvc.API.Controllers
         }
 
         [HttpPost("LoginUser")]
-        public async Task<ActionResult> LoginUser([FromBody] LoginModel userInfo)
+        public async Task<IActionResult> LoginUser([FromBody] LoginModel userInfo)
         {
             var result = await _authentication.Authenticate(userInfo.Email, userInfo.Password);
             if (!result)
@@ -30,18 +30,49 @@ namespace CleanArchMvc.API.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid Login attempt.");
                 return BadRequest(ModelState);
             }
-            return GenerateToken(userInfo);
+            var token = GenerateToken(userInfo);
+            return Ok(token);
         }
+
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> CreateUser([FromBody] RegisterModel userInfo)
+        {
+            var result = await _authentication.RegisterUser(userInfo.Email, userInfo.Password);
+            if (!result)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid Register attempt.");
+                return BadRequest(ModelState);
+            }
+
+            return StatusCode(
+                    StatusCodes.Status201Created,
+                    $"User {userInfo.Email} was registered successfully!"
+            );
+        }
+
+
 
         private UserToken GenerateToken(LoginModel userInfo)
         {
+            IEnumerable<string> userRoles = new List<string>()
+            {
+                "Admin",
+                "User"
+            };
+
             // Criar as claims para o token
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim("email", userInfo.Email),
                 new Claim("meuvalor", "o que eu quiser"),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
+
+            // Adicionar as claims de roles ao token
+            foreach (var role in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             // Gerar a chave de segurança e as credenciais de assinatura
             var privateKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]!));
@@ -61,10 +92,12 @@ namespace CleanArchMvc.API.Controllers
                 signingCredentials: credentials
             );
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var encodedToken = tokenHandler.WriteToken(token);
+            return new UserToken()
+            {
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
+                Expiration = expiration
+            };
 
-            return new UserToken();
         }
     }
 }
