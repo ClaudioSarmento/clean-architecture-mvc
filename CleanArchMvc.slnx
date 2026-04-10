@@ -4,6 +4,9 @@
     <BuildType Name="Develop" />
     <BuildType Name="Release" />
   </Configurations>
+  <Project Path="CleanArchMvc.API/CleanArchMvc.API.csproj" Id="d360d7a1-dfe4-436a-b4aa-ef15d4bc51a2">
+    <BuildType Solution="Develop|*" Project="Release" />
+  </Project>
   <Project Path="CleanArchMvc.Application/CleanArchMvc.Application.csproj" Id="75c675bc-6df9-4212-8cdd-d121788dac3c" />
   <Project Path="CleanArchMvc.Domain.Tests/CleanArchMvc.Domain.Tests.csproj" Id="569d2fd0-e138-42b7-b449-df70deef9d72">
     <Build Solution="Debug|*" Project="false" />
